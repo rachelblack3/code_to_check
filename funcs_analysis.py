@@ -166,7 +166,7 @@ def FeatureReduction(raw_PSD, ellip):
 
     ''' Ths class performs the reduction on PSDs, using previously determined thresholds ''' 
 
-    noise_file ='/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BThreshold_201209-201309.dat'
+    noise_file ='/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BThreshold_201209-201909.dat'
     # load the power and std data
     thresholds = np.loadtxt(noise_file)[:,1]
     peaks = np.loadtxt(noise_file)[:,0]
