@@ -275,8 +275,6 @@ def outwards_journ(input_dict, gee_index):
         
     if (pp_type!=1) and (pp_type!=2):
         # if we did not find the plasmapause via the density gradient, and no intitial density gap, chek ECH waves again
-        for i in range(d_perigee,d_apogee): 
-            if (np.isnan(input_dict["density"][i])) or (np.isnan(d_plusIndex)) or (dt_density>timedelta(seconds=600)) or (input_dict["fpe_epoch"][i]>apogee):
 
                 # find the hfr spectra indicies correaponding to perigee and apogee
                 d_spectra_perigee = gl.find_closest(input_dict["hfr_epoch"],perigee)[1]
@@ -325,51 +323,6 @@ def outwards_journ(input_dict, gee_index):
                     pp_type,pp_L,pp_time,pp_MLT,pp_AE,pp_AEstar = density_thresh(input_dict["fpe_epoch"], input_dict["lanl_epoch"], input_dict["MLT"], input_dict["MLAT_N"], input_dict["MLAT_S"], input_dict["Lstar"],input_dict["density"],d_perigee,d_apogee,input_dict["epoch_omni"],input_dict["AE"],input_dict["epoch_omni_low"],input_dict["Dst"],input_dict["Kp"])
                     stopThresh = True
 
-            # if the l+0.5 goes beyond the half orbit, again check ECH waves if not already, and then check threshold if not already   
-            elif (input_dict["lanl_epoch"][Lstar_plusIndex]>apogee):
-                d_spectra_perigee = gl.find_closest(input_dict["hfr_epoch"],perigee)[1]
-                d_spectra_apogee = gl.find_closest(input_dict["hfr_epoch"],apogee)[1]
-                # put in the ECH criteria!!
-                pp_index = np.nan
-                integral = []
-                for k in range(d_spectra_perigee,d_spectra_apogee):
-                    if stopECH == True:
-                        break
-                    # find integral again
-                    integral.append(find_ech(input_dict["fce"],input_dict["fce_epoch"],input_dict["Etotal"],input_dict["hfr_E_reduced"],input_dict["survey_epoch"],input_dict["hfr_epoch"],input_dict["survey_freq"],input_dict["hfr_frequency"],input_dict["hfr_epoch"][k]))
-
-                # now fnd last time we cross threshold by going through list!
-                for k in range(1, len(integral)):
-                    if integral[k] > 1e-4 and integral[k-1] <= 1e-4:
-                            pp_index = d_spectra_perigee+k
-                            pp_type = 2
-                            # find corresponding L, MLT, AE, AE*
-                            findLstar=fp.FindLANLFeatures(input_dict["hfr_epoch"][pp_index], input_dict["lanl_epoch"], input_dict["MLT"], input_dict["MLAT_N"], input_dict["MLAT_S"], input_dict["Lstar"])
-                            Lstar_stamp = findLstar.get_Lstar
-                            MLT_stamp = findLstar.get_MLT   
-
-                            findOmniFeats = fp.FindOMNIFeatures(input_dict["hfr_epoch"][pp_index],input_dict["epoch_omni"], input_dict["epoch_omni_low"], input_dict["AE"], input_dict["Kp"], input_dict["Dst"])
-                            AE_stamp = findOmniFeats.get_AE
-                            AE_star = findOmniFeats.get_AEstar
-
-                            # set plasmapause crossing details
-                            pp_L = Lstar_stamp
-                            pp_AE = AE_stamp
-                            pp_AEstar = AE_star
-                            pp_MLT = MLT_stamp
-                            pp_time = input_dict["hfr_epoch"][pp_index]
-
-                            # set ECH flag to True
-                            stopECH=True
-
-            
-                # if we go over the range, use threshold method and then leave
-                if (pp_type!=2)and(stopThresh==False) :
-                    print("Now stop checking ECH")
-                    stopECH = True
-                    pp_type,pp_L,pp_time,pp_MLT,pp_AE,pp_AEstar = density_thresh(input_dict["fpe_epoch"], input_dict["lanl_epoch"], input_dict["MLT"], input_dict["MLAT_N"], input_dict["MLAT_S"], input_dict["Lstar"],input_dict["density"],d_perigee,d_apogee,input_dict["epoch_omni"],input_dict["AE"],input_dict["epoch_omni_low"],input_dict["Dst"],input_dict["Kp"])
-                    stopThresh = True
-                
     # if we still haven't found it, rsort back to density threshold
     if pp_type == 0:
         # resort back to density threshold one final time, if none of the other options worked
