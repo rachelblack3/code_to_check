@@ -18,7 +18,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
         malas_thresh = peaks[0] - thresholds[0]
 
         thresholds = peaks + malas_thresh
-        thresholds = 10**(thresholds) #+ 0.57713065)
+        thresholds = 10**(thresholds) 
 
     
     elif BEflag == "E" and Burst_flag == False:
@@ -28,7 +28,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
             # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
         
-        thresholds = 10**(thresholds) #+ 0.57713065)
+        thresholds = 10**(thresholds) 
 
 
     elif Burst_flag == 'K':
@@ -37,7 +37,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
         # load the power and std data
         thresholds = np.loadtxt(noise_file)
     
-        thresholds = 10**(thresholds) #+ 0.57713065)
+        thresholds = 10**(thresholds)
  
     
     elif Burst_flag == 's':
@@ -46,7 +46,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
         # load the power and std data
         thresholds = np.loadtxt(noise_file)
     
-        thresholds = 10**(thresholds) #+ 0.57713065)
+        thresholds = 10**(thresholds) 
 
     elif BEflag == "EH" and Burst_flag == False:
 
@@ -55,7 +55,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
             # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
         
-        thresholds = 10**(thresholds) #+ 0.57713065)
+        thresholds = 10**(thresholds) 
 
     elif BEflag == "EW" and Burst_flag == False:
 
@@ -64,7 +64,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
             # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
         
-        thresholds = 10**(thresholds+0.57713065)
+        thresholds = 10**(thresholds)
         
 
     # Do the reduction
