@@ -11,7 +11,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
 
     if BEflag == "B" and Burst_flag == False:
 
-        noise_file ='/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BThreshold_201209-201309.dat'
+        noise_file ='/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BThreshold_201209-201909.dat'
         # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
         peaks = np.loadtxt(noise_file)[:,0]
@@ -23,7 +23,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
     
     elif BEflag == "E" and Burst_flag == False:
 
-        noise_file ='/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BThreshold_201209-201309.dat'
+        noise_file ='/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BThreshold_201209-201909.dat'
 
             # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
@@ -42,7 +42,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
     
     elif Burst_flag == 's':
 
-        noise_file = '/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BurstThreshSMalas.dat'
+        noise_file = '/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BurstThreshS.dat'
         # load the power and std data
         thresholds = np.loadtxt(noise_file)
     
@@ -50,7 +50,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
 
     elif BEflag == "EH" and Burst_flag == False:
 
-        noise_file ='/data/emfisis_burst/wip/rablack75/BackReduction/BThreshold_201209-201309.dat'
+        noise_file ='/data/emfisis_burst/wip/rablack75/BackReduction/BThreshold_201209-201909.dat'
 
             # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
@@ -59,7 +59,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
 
     elif BEflag == "EW" and Burst_flag == False:
 
-        noise_file ='/data/emfisis_burst/wip/rablack75/BackReduction/Thresholds/EWThreshold_201209-201409.dat'
+        noise_file ='/data/emfisis_burst/wip/rablack75/BackReduction/Thresholds/EWThreshold_201209-201909.dat'
 
             # load the power and std data
         thresholds = np.loadtxt(noise_file)[:,1]
