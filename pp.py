@@ -517,56 +517,43 @@ def inwards_journ(input_dict, gee_index):
                 break
 
     # cycle through the density data fro this half orbit again checking ech waves and density threshold
-    if pp_type!=1:
-        for i in range(d_apogee,d_perigee):   
-            if pp_type==2:
-                break
-            # If problem: density is an insane value (negative or massssive), or there are density data gaps- check ECH or set to no method worked
-            if (np.isnan(input_dict["density"][i])) or (np.isnan(input_dict["density"][d_plusIndex])) or (input_dict["lanl_epoch"][Lstar_plusIndex]>perigee)or (dt_density>timedelta(seconds=10)) or (input_dict["fpe_epoch"][i]>perigee):
+    if pp_type!=1: 
+        # find the hfr spectra indicies correaponding to perigee and apogee
+        d_spectra_apogee = gl.find_closest(input_dict["hfr_epoch"],apogee)[1]
+        d_spectra_perigee = gl.find_closest(input_dict["hfr_epoch"],perigee)[1]
+        
+        # cycle through the HFR spectra for this orbit
+        # integrate in ech freq range and take find last crossing
+        pp_index = np.nan
+        integral = []
+        for k in range(d_spectra_apogee,d_spectra_perigee):
                 
-                # find the hfr spectra indicies correaponding to perigee and apogee
-                d_spectra_apogee = gl.find_closest(input_dict["hfr_epoch"],apogee)[1]
-                d_spectra_perigee = gl.find_closest(input_dict["hfr_epoch"],perigee)[1]
-                
-                # cycle through the HFR spectra for this orbit
-                # integrate in ech freq range and take find last crossing
-                pp_index = np.nan
-                integral = []
-                for k in range(d_spectra_apogee,d_spectra_perigee):
-                        
-                    integral.append(find_ech(input_dict["fce"],input_dict["fce_epoch"],input_dict["Etotal"],input_dict["hfr_E_reduced"],input_dict["survey_epoch"],input_dict["hfr_epoch"],input_dict["survey_freq"],input_dict["hfr_frequency"],input_dict["hfr_epoch"][k]))
+            integral.append(find_ech(input_dict["fce"],input_dict["fce_epoch"],input_dict["Etotal"],input_dict["hfr_E_reduced"],input_dict["survey_epoch"],input_dict["hfr_epoch"],input_dict["survey_freq"],input_dict["hfr_frequency"],input_dict["hfr_epoch"][k]))
 
-                # now fnd last time we cross threshold by going through list!
-                for k in range(1, len(integral)):
-                    if integral[k] < 1e-4 and integral[k-1] >= 1e-4:
-                        # starts from apogee index!!
-                        pp_index = d_spectra_apogee+k
+        # now fnd last time we cross threshold by going through list!
+        for k in range(1, len(integral)):
+            if integral[k] < 1e-4 and integral[k-1] >= 1e-4:
+                # starts from apogee index!!
+                pp_index = d_spectra_apogee+k
 
-                    # set location etc 
-                    if np.isnan(pp_index)==False:
+            # set location etc 
+            if np.isnan(pp_index)==False:
 
-                        pp_type = 2
-                        # find L, MLT, AE and AE*
-                        findLstar= fp.FindLANLFeatures(input_dict["hfr_epoch"][pp_index], input_dict["lanl_epoch"], input_dict["MLT"], input_dict["MLAT_N"], input_dict["MLAT_S"], input_dict["Lstar"])
-                        Lstar_stamp = findLstar.get_Lstar
-                        MLT_stamp = findLstar.get_MLT
-                        findOmniFeats = fp.FindOMNIFeatures(input_dict["hfr_epoch"][pp_index],input_dict["epoch_omni"], input_dict["epoch_omni_low"], input_dict["AE"], input_dict["Kp"], input_dict["Dst"])
-                        AE_stamp = findOmniFeats.get_AE
-                        AE_star = findOmniFeats.get_AEstar
+                pp_type = 2
+                # find L, MLT, AE and AE*
+                findLstar= fp.FindLANLFeatures(input_dict["hfr_epoch"][pp_index], input_dict["lanl_epoch"], input_dict["MLT"], input_dict["MLAT_N"], input_dict["MLAT_S"], input_dict["Lstar"])
+                Lstar_stamp = findLstar.get_Lstar
+                MLT_stamp = findLstar.get_MLT
+                findOmniFeats = fp.FindOMNIFeatures(input_dict["hfr_epoch"][pp_index],input_dict["epoch_omni"], input_dict["epoch_omni_low"], input_dict["AE"], input_dict["Kp"], input_dict["Dst"])
+                AE_stamp = findOmniFeats.get_AE
+                AE_star = findOmniFeats.get_AEstar
 
-                        # set the plasmapause crossing details
-                        pp_L = Lstar_stamp
-                        pp_MLT = MLT_stamp
-                        pp_AE = AE_stamp
-                        pp_AEstar = AE_star
-                        pp_time = input_dict["hfr_epoch"][pp_index]
-                       
-                
-                # if we go over the range, use threshold method and then leave
-                if pp_type!=2:
-                
-                    pp_type,pp_L,pp_time,pp_MLT,pp_AE,pp_AEstar = density_thresh(input_dict["fpe_epoch"], input_dict["lanl_epoch"], input_dict["MLT"], input_dict["MLAT_N"], input_dict["MLAT_S"], input_dict["Lstar"],input_dict["density"],d_apogee,d_perigee,input_dict["epoch_omni"],input_dict["AE"],input_dict["epoch_omni_low"],input_dict["Dst"],input_dict["Kp"])
-                    break
+                # set the plasmapause crossing details
+                pp_L = Lstar_stamp
+                pp_MLT = MLT_stamp
+                pp_AE = AE_stamp
+                pp_AEstar = AE_star
+                pp_time = input_dict["hfr_epoch"][pp_index]
 
     # finally, if we still haven't found the crossing, then use density threshold              
     if pp_type == 0:
