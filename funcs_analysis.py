@@ -86,7 +86,7 @@ def HFRback(raw_PSD):
     noise_file = pycdf.CDF('/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/sn_threshold_RBSP-A.cdf')
 
     # finding the background noise from the thresholds and snr
-    # note! there is only one snr - where does this come from? Ref. (Probs Malaspina quoted in Jenny's paper)
+    
     hfr_noise =[]
     for i in range(len(noise_file['frequencies'])):
         hfr_noise.append((noise_file['thresholds'][i]))
