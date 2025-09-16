@@ -29,7 +29,7 @@ method should be used in the first instance, before moving onto methods 2 or 3.
 
 2. via identifying ECH waves.  Electron cyclotron harmonic (ECH) waves are emissions within multiples of the electron gyrofrequency, observed outside of the plasmasphere and often terminate at the plasmapause
 boundary (Meredith et al., 2004). This can be incredibly useful when there is a lack of density data, as the sudden lack of emissions is indicative of a density gradient. However, ECH waves are not always observed, 
-and in some cases, there is leakage into the plasmasphere (Liu et al., 2020).
+and in some cases, there is leakage into the plasmasphere (Liu et al., 2020). The amplitude required for ECH wave emission signal is set at 10^-4 V/m between fce<f<5fce.
 
 3. via a density threshold. This is the method of last resort. The plasmapause density can drop from plasmasphere to plasmatrough densities(from 100cm−3 to 1) gradually over a width greater than that defined by the
 gradient threshold. To account for this, a plausible absolute density between 30-100cm3 is often chosen as an alternative. The density threshold chosen is relativelyarbitrary and is therefore a non-case
@@ -190,7 +190,7 @@ def outwards_journ(input_dict, gee_index):
             
             integral.append(find_ech(input_dict["fce"],input_dict["fce_epoch"],input_dict["Etotal"],input_dict["hfr_E_reduced"],input_dict["survey_epoch"],input_dict["hfr_epoch"],input_dict["survey_freq"],input_dict["hfr_frequency"],input_dict["hfr_epoch"][i]))
 
-        # find last time we cross threshold by going backwards through list of integrals!
+        # find last time we cross threshold by going through list of integrals!
         for i in range(1, len(integral)):
             if integral[i] > 1e-4 and integral[i-1] <= 1e-4:
                 # found! starts from apogee location, so add to index
@@ -288,7 +288,7 @@ def outwards_journ(input_dict, gee_index):
                     
                     integral.append(find_ech(input_dict["fce"],input_dict["fce_epoch"],input_dict["Etotal"],input_dict["hfr_E_reduced"],input_dict["survey_epoch"],input_dict["hfr_epoch"],input_dict["survey_freq"],input_dict["hfr_frequency"],input_dict["hfr_epoch"][k]))
 
-                # now fnd last time we cross threshold by going backwards through list!
+                # now fnd last time we cross threshold by going through list!
                 for k in range(1, len(integral)):
                     if integral[k] > 1e-4 and integral[k-1] <= 1e-4:
                         # starts from apogee index!!
