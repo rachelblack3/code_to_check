@@ -37,9 +37,17 @@ In every WFR frequency band, check emeission is:
 4. outside of plasmasphere (use plasmatrough regions in 'plasmatrough_regions/{A}or{B}'
 
 Outputs:
-Dataframe of all survey timestamps:
-'ChorusID==True' - positive ID
-"SurveyIntegral' - power between f_lhr - 0.9f_ce
+Each row of dataframe represents timestamp in WFR, with:
+'ChorusID==True' - positive ID for each WFR frequency band (shape:65)
+'SurveyIntegral' - power between f_lhr - 0.9f_ce           (shape:1)
+'Timestamp'      - wfr timestamp                           (shape:1)
+'MLT'            - MLT                                     (shape:1)
+'MLAT'           - MLAT                                    (shape:1)
+'Lstar'          - L*                                      (shape:1)
+'AE'             - AE                                      (shape:1)
+'Kp'             - Kp                                      (shape:1)
+'Dst'            - Dst                                     (shape:1)
+'Plasmapause'    - In or out                               (shape:1)
 
 """
 
