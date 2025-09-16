@@ -32,6 +32,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
 
 
     elif Burst_flag == 'K':
+        # large window (Kletzing survey style) burst
 
         noise_file = '/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BurstThreshK.dat'
         # load the power and std data
@@ -41,7 +42,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
  
     
     elif Burst_flag == 's':
-
+        # small window (rachel style) burst
         noise_file = '/data/hpcdata/users/rablack75/CountSurvey/data/Background_thresholds/BurstThreshS.dat'
         # load the power and std data
         thresholds = np.loadtxt(noise_file)
