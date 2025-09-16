@@ -74,7 +74,7 @@ def BackReduction(raw_PSD, BEflag, Burst_flag):
         for j in range(np.shape(raw_PSD)[0]):
 
             if (raw_PSD[j,i] > thresholds[i]):
-                reduced_PSD[j,i] = raw_PSD[j,i] #- thresholds[i]
+                reduced_PSD[j,i] = raw_PSD[j,i]
             else:
                 reduced_PSD[j,i] = 0.
 
